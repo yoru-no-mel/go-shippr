@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/yoru-no-mel/go-shippr/config"
 	"github.com/yoru-no-mel/go-shippr/logger"
+	"github.com/yoru-no-mel/go-shippr/module/user"
 )
 
 type Server struct {
@@ -35,6 +36,9 @@ func (s *Server) MountHandlers() {
 			"message": "Hello World",
 		})
 	})
+
+	userHandler := user.NewHandler(s.log)
+	userHandler.RegisterRoutes(api)
 }
 
 func (s *Server) Start(addr string) error {
