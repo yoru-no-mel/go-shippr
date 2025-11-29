@@ -29,7 +29,6 @@ func Close(conn *pgx.Conn) {
 }
 
 func AutoMigrate(config config.Config) {
-
 	path := fmt.Sprintf("file://%s", config.DBMigrationPath)
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
 		config.DBUser,

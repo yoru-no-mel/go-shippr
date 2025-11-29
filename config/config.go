@@ -16,6 +16,7 @@ type Config struct {
 	DBRecreate      bool   `mapstructure:"DB_RECREATE"`
 	DBMigrationPath string `mapstructure:"DB_MIGRATION_PATH"`
 	DBUrl           string
+	Port            int `mapstructure:"PORT"`
 }
 
 func LoadConfig(name string, path string) (config Config) {
