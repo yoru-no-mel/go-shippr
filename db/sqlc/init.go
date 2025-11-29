@@ -60,11 +60,11 @@ func AutoMigrate(config config.Config) {
 func Drop(config config.Config) {
 	path := fmt.Sprintf("file://%s", config.MigrationPath)
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		config.DBUsername,
-		config.DBPassword,
-		config.DBHost,
-		config.DBPort,
-		config.DBName,
+		config.DB.User,
+		config.DB.Password,
+		config.DB.Host,
+		config.DB.Port,
+		config.DB.Name,
 	)
 
 	m, err := migrate.New(path, dsn)
