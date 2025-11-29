@@ -30,9 +30,9 @@ func Close(conn *pgx.Conn) {
 
 func AutoMigrate(config config.Config) {
 
-	path := fmt.Sprintf("file://%s", config.MigrationPath)
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		config.DBUsername,
+	path := fmt.Sprintf("file://%s", config.DBMigrationPath)
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
+		config.DBUser,
 		config.DBPassword,
 		config.DBHost,
 		config.DBPort,
@@ -58,13 +58,13 @@ func AutoMigrate(config config.Config) {
 }
 
 func Drop(config config.Config) {
-	path := fmt.Sprintf("file://%s", config.MigrationPath)
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		config.DB.User,
-		config.DB.Password,
-		config.DB.Host,
-		config.DB.Port,
-		config.DB.Name,
+	path := fmt.Sprintf("file://%s", config.DBMigrationPath)
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
+		config.DBUser,
+		config.DBPassword,
+		config.DBHost,
+		config.DBPort,
+		config.DBName,
 	)
 
 	m, err := migrate.New(path, dsn)

@@ -4,38 +4,41 @@ import (
 	"fmt"
 	"os"
 
-	"go.uber.org/zap"
+	_ "go.uber.org/zap"
 
 	conf "github.com/yoru-no-mel/go-shippr/config"
 	db "github.com/yoru-no-mel/go-shippr/db/sqlc"
-	"github.com/yoru-no-mel/go-shippr/logger"
+	_ "github.com/yoru-no-mel/go-shippr/logger"
 )
 
 func main() {
 	var (
-		log    logger.Logger
+		// log  logger.Logger
 		config conf.Config
 	)
 	env := os.Getenv("ENVIRONMENT")
 
 	if env == "" || env == "dev" {
 		env = "dev"
-		logger, _ := zap.NewDevelopment()
-		defer logger.Sync()
-		log = logger.Sugar()
+		// logger, _ := zap.NewDevelopment()
+		// defer logger.Sync()
+		// log = logger.Sugar()
 		config = conf.LoadConfig(env, "./env")
 	}
+	fmt.Println(config.DBHost)
 
-	config.DB.Url = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		config.DB.User,
-		config.DB.Password,
-		config.DB.Host,
-		config.DB.Port,
-		config.DB.Name,
+	config.DBUrl = fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=disable",
+		config.DBUser,
+		config.DBPassword,
+		config.DBHost,
+		config.DBPort,
+		config.DBName,
 	)
 
 	dbConn := db.Connect(config)
 	defer db.Close(dbConn)
+
+	db.AutoMigrate(config)
 
 	// server := api.NewServer(
 	// 	config,
